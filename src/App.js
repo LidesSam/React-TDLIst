@@ -7,6 +7,24 @@ import ItemTDL from '../src/Components/Item-tdl.js';
 
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 
+
+{/*
+  
+import './App.css';
+import NavBar from '../src/components/Navbar.js';
+import Header from '../src/components/MyHeader.js'
+import Home from '../src/components/Pages/Home';
+import fullpage from '../src/components/Pages/FullPage';
+import clock from '../src/components/Clock'
+import folderTDL from '../src/Components/Item-tdl';
+import listTDL from '../src/Components/Item-tdl';
+
+import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';*/}
+
+
+
+
+
 class App extends Component {
 
   constructor(props) {
@@ -14,63 +32,60 @@ class App extends Component {
 
     this.state = {
         newitemdata:"",
-        list:[], 
-        lastId:0
+        list:[
+          {
+            id: "0" ,
+            value:"aloha"
+          }
+        ],
+        lastID:0
     }
   }
   updateInput(key, value) {
     // update react state
     this.setState({ [key]: value });
-    
+  }
+
+  updateNewItemData(Value){
+    this.state.newitemdata=Value
   }
 
   addItem() {
-
-    const newlastId=    this.state.lastId+1;
-    //const uniqueid= 1 + Math.random(),
     // create a new item with unique id
+    let newlastID = this.state.lastID+1
+    console.log(this.state.newitemdata)
     const newItem = {
-      id: newlastId,
+      id:newlastID,
       value: this.state.newitemdata
-    }
-
-
-  //  console.log("lid:"+newlastId)
-    var  newitemtdl = React.createElement(ItemTDL,{id:newlastId,value:this.state.newitemdata ,callbackDel:this.deleteItem.bind(newlastId)},null)
-    //new ItemTDL(newlastId,this.state.newitemdata,this.deleteItem.bind(newlastId))
-   
-
-   // alert(newItem.id+" "+newItem.value+" "+this.state.lastId)
-  // create a new item with unique id
-
-
-  //  var newItem = new ItemTDL(this.LastId,this.value);
-
+    };
+    console.log(newItem.value)
     // copy current list of items
     const list = [...this.state.list];
 
     // add the new item to the list
-    //list.push(newItem);
-    list.push(newitemtdl )
+    list.push(newItem);
+
     // update state with new list, reset the new item input
     this.setState({
       list,
       newitemdata: "",
-      lastId:newlastId
+      lastID:newlastID
     });
+    //clear input box
+    var vinput=document.getElementById("itemvalueinput")
+    vinput.value=""
+
   }
 
-
   deleteItem(id) {
+    console.log("delete" +id)
     // copy current list of items
-    console.log("delete:"+id)
-    /*const list = [...this.state.list];
+    const list = [...this.state.list];
     // filter out the item being deleted
     const updatedList = list.filter(item => item.id !== id);
 
-    this.setState({ list: updatedList });*/
+    this.setState({ list: updatedList });
   }
-
 
   render() {
     return (
@@ -79,8 +94,8 @@ class App extends Component {
   
           <React.Fragment>
 
-        {/*to fast test some freatures and <ItemTDL id ="-1" value="cal" />*/}
-          
+
+          <ItemTDL/>
 
           </React.Fragment>
           
@@ -89,43 +104,44 @@ class App extends Component {
 
       
       
-          <h3>To do List</h3>
+          <h3>To do Liast</h3>
           <br />
-          
+
           {/* add item */}
           <input
+            id="itemvalueinput"
             type="text"
-            placeholder="NEW ITEM"
+            placeholder="Write here"
             value={this.state.newItem}
-            onChange={e => this.updateInput("newitemdata", e.target.value)}
+            onChange={e => this.updateNewItemData(e.target.value)}
           />
           
           {/* add btn */}
           <button
             onClick={() => this.addItem()}
           >
-              "NEW ITEM"
+              "New"
           </button>
 
           
-          {/* add folder */}
+          {/* add folder 
           <button>
               "NEW folder"
           </button>
-
+        */}
 
           <br /> <br />
-          <div className="centerbox">
           <ul>
             {this.state.list.map(item => {
               return (
                 <li key={item.id}>
-                  {item}
+                  
+                  <ItemTDL id ={item.id} value ={item.value} callbackDel ={()=>this.deleteItem(item.id)}/>
+                  
                 </li>
               );
             })}
           </ul>
-          </div>
 
       
     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 
+
 import '../App.css';
 
 class ItemTDL extends React.Component {
@@ -23,21 +24,22 @@ class ItemTDL extends React.Component {
 
         this.state = {
             id: props.id,
-            inEdit: false,
             value: props.value,
-            callbackDel:  props.callbackDel
+            callbackDel:  props.callbackDel,
+            inEdit: false
+           
             
         }
-        
+    
     }
 
-    updateValue(value) {
-        this.state.value = value
+    updateValue(Value) {
+        this.state.value = Value
         
     }
 
     inEditMode() {
-
+   
         return !this.state.inEdit;
     }
 
@@ -47,13 +49,14 @@ class ItemTDL extends React.Component {
     enabledEditMode() {
 
         this.state.inEdit = true;
-
-        var inputbox = document.getElementByid("valueInput");
-        inputbox.disabled = !this.state.inEdit
+        var vinput=document.getElementById("valueInput"+this.state.id)
+        vinput.disabled= !this.state.inEdit
+        
     }
     deleteitself() {
         if (typeof this.state.callbackDel == 'function') {
-            this.state.callbackDel()
+            console.log("tdl:"+this.state.id)
+            this.state.callbackDel(this.state.id)
         } else {
            console.log("no set delete callback")
         }
@@ -69,14 +72,14 @@ class ItemTDL extends React.Component {
 
                 <input type="checkbox" id="cbox" value="first_checkbox"></input>
                 <span>{this.state.id} </span>
-                <input id="valueInput" type="text" placeholder="TDLItem"
-
+                <input id = {"valueInput"+this.state.id} type="text" placeholder="TDLItem"
+                   
                     disabled={this.inEditMode()}
 
                     onChange={e => this.updateValue(e.target.value)}
-
+                    value={this.state.value}
                 >
-
+                    
                 </input>
 
                 <button className="editBtn"
