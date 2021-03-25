@@ -1,4 +1,5 @@
 import logo from './logo.svg';
+
 import './App.css';
 
 import React,{Component} from 'react';
@@ -78,24 +79,42 @@ class App extends Component {
   }
 
   deleteItem(id) {
-    console.log("delete" +id)
+    
     // copy current list of items
     const list = [...this.state.list];
     // filter out the item being deleted
     const updatedList = list.filter(item => item.id !== id);
 
     this.setState({ list: updatedList });
+
   }
 
+  editItem(id) {
+    console.log("edit" +id)
+
+    // promt instead of a Modal(pop-up), simply because was quick to made
+    // previst to be change to a modal(pop up) in the near future.
+    const newvalue=prompt("New value ")
+    return newvalue;
+  
+  
+
+  }
+
+  
   render() {
     return (
     <div className="App">
+
+  
+
       <Router>
   
           <React.Fragment>
 
 
           <ItemTDL/>
+         
 
           </React.Fragment>
           
@@ -136,7 +155,7 @@ class App extends Component {
               return (
                 <li key={item.id}>
                   
-                  <ItemTDL id ={item.id} value ={item.value} callbackDel ={()=>this.deleteItem(item.id)}/>
+                  <ItemTDL id ={item.id} value ={item.value} callbackDel ={()=>this.deleteItem(item.id)} callbackEdit={()=>this.editItem(item.id)}/>
                   
                 </li>
               );

@@ -1,24 +1,11 @@
-import React from 'react';
+import React,{Component} from 'react';
 
 
 
 import '../App.css';
 
-class ItemTDL extends React.Component {
-/*
+class ItemTDL extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            id: props.id,
-            inEdit: false,
-            value: props.value,
-            callbackDel:  props.callbackDel
-
-        }
-
-    }*/
     constructor(props) {
         super(props);
 
@@ -26,6 +13,7 @@ class ItemTDL extends React.Component {
             id: props.id,
             value: props.value,
             callbackDel:  props.callbackDel,
+            callbackEdit:  props.callbackEdit,
             inEdit: false
            
             
@@ -34,18 +22,20 @@ class ItemTDL extends React.Component {
     }
 
     updateValue(Value) {
-        this.state.value = Value
-        
+        if(this.state.inEdit){
+         this.state.value = Value
+        }
     }
 
     inEditMode() {
    
-        return !this.state.inEdit;
+        return this.state.inEdit;
     }
 
     handleClick() {
 
     }
+
     enabledEditMode() {
 
         this.state.inEdit = true;
@@ -53,9 +43,23 @@ class ItemTDL extends React.Component {
         vinput.disabled= !this.state.inEdit
         
     }
+    editPressed() {
+        if (typeof this.state.callbackEdit == 'function') {
+            console.log("v1:"+this.state.value)
+            this.state.value= this.state.callbackEdit(this.state.id)
+            var vinput=document.getElementById("valueInput"+this.state.id)
+            vinput.value= this.state.value
+            
+        } else {
+           console.log("no set edit press")
+        }
+        
+
+    }
+
     deleteitself() {
         if (typeof this.state.callbackDel == 'function') {
-            console.log("tdl:"+this.state.id)
+           
             this.state.callbackDel(this.state.id)
         } else {
            console.log("no set delete callback")
@@ -72,18 +76,23 @@ class ItemTDL extends React.Component {
 
                 <input type="checkbox" id="cbox" value="first_checkbox"></input>
                 <span>{this.state.id} </span>
-                <input id = {"valueInput"+this.state.id} type="text" placeholder="TDLItem"
+                <textarea id = {"valueInput"+this.state.id} type="text" placeholder="TDLItem"
                    
-                    disabled={this.inEditMode()}
+                    disabled={true}
 
                     onChange={e => this.updateValue(e.target.value)}
                     value={this.state.value}
                 >
                     
-                </input>
+                </textarea>
 
-                <button className="editBtn"
+                {/*<button className="editBtn"
                     onClick={() => this.enabledEditMode()}
+                >
+                    edit
+        </button>*/}
+                <button className="editBtn"
+                    onClick={() => this.editPressed()}
                 >
                     edit
                 </button>

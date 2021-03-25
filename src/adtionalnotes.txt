@@ -1,1 +1,3 @@
 prototype 4(creation and delete of items fully functional)
+objects in list don't recive inputs
+prototype 5 todo function witout functions of presitence
