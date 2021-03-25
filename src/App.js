@@ -7,24 +7,6 @@ import ItemTDL from '../src/Components/Item-tdl.js';
 
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 
-
-{/*
-  
-import './App.css';
-import NavBar from '../src/components/Navbar.js';
-import Header from '../src/components/MyHeader.js'
-import Home from '../src/components/Pages/Home';
-import fullpage from '../src/components/Pages/FullPage';
-import clock from '../src/components/Clock'
-import folderTDL from '../src/Components/Item-tdl';
-import listTDL from '../src/Components/Item-tdl';
-
-import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';*/}
-
-
-
-
-
 class App extends Component {
 
   constructor(props) {
@@ -45,6 +27,7 @@ class App extends Component {
   addItem() {
 
     const newlastId=    this.state.lastId+1;
+    //const uniqueid= 1 + Math.random(),
     // create a new item with unique id
     const newItem = {
       id: newlastId,
@@ -52,8 +35,12 @@ class App extends Component {
     }
 
 
+  //  console.log("lid:"+newlastId)
+    var  newitemtdl = React.createElement(ItemTDL,{id:newlastId,value:this.state.newitemdata ,callbackDel:this.deleteItem.bind(newlastId)},null)
+    //new ItemTDL(newlastId,this.state.newitemdata,this.deleteItem.bind(newlastId))
+   
 
-    alert(newItem.id+" "+newItem.value+" "+this.state.lastId)
+   // alert(newItem.id+" "+newItem.value+" "+this.state.lastId)
   // create a new item with unique id
 
 
@@ -63,8 +50,8 @@ class App extends Component {
     const list = [...this.state.list];
 
     // add the new item to the list
-    list.push(newItem);
-
+    //list.push(newItem);
+    list.push(newitemtdl )
     // update state with new list, reset the new item input
     this.setState({
       list,
@@ -76,12 +63,14 @@ class App extends Component {
 
   deleteItem(id) {
     // copy current list of items
-    const list = [...this.state.list];
+    console.log("delete:"+id)
+    /*const list = [...this.state.list];
     // filter out the item being deleted
     const updatedList = list.filter(item => item.id !== id);
 
-    this.setState({ list: updatedList });
+    this.setState({ list: updatedList });*/
   }
+
 
   render() {
     return (
@@ -90,8 +79,8 @@ class App extends Component {
   
           <React.Fragment>
 
-
-          <ItemTDL ID ="-1" value="cal" />
+        {/*to fast test some freatures and <ItemTDL id ="-1" value="cal" />*/}
+          
 
           </React.Fragment>
           
@@ -131,7 +120,7 @@ class App extends Component {
             {this.state.list.map(item => {
               return (
                 <li key={item.id}>
-                  <ItemTDL ID={item.id} value={item.value} parent = {this}/>
+                  {item}
                 </li>
               );
             })}
