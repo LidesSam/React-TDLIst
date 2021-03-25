@@ -8,28 +8,37 @@ class ItemTDL extends React.Component {
 
     constructor(props) {
         super(props);
+    
         this.state = {
+            ID:props.ID,
             inEdit: false,
-            value: "item"
+            value: props.value
+            
+
         }
-
-
+        
     }
-    updateValue() {
 
+
+    updateValue(value) {
+        this.state.value=value
+        alert("hello")
     }
 
     inEditMode() {
 
-        return this.inEdit;
+        return !this.state.inEdit;
     }
 
     handleClick() {
 
     }
     enabledEditMode() {
-        this.inEdit = true;
 
+        this.state.inEdit = true;
+  
+        var inputbox = document.getElementById("valueInput");
+        inputbox.disabled = !this.state.inEdit
     }
 
 
@@ -39,11 +48,18 @@ class ItemTDL extends React.Component {
 
             <div className="itemtdl">
 
-                <input type="checkbox" id="cbox1" value="first_checkbox"></input>
-                <input type="text" placeholder="TDLItem" disabled={this.inEditMode()}
-                    onChange={e => this.updateValue()}>
-
+                <input type="checkbox" id="cbox" value="first_checkbox"></input>
+                <span>{this.state.ID} </span>
+                <input id="valueInput" type="text" placeholder="TDLItem" 
+                
+                disabled={this.inEditMode()}
+                  
+                   onChange ={e => this.updateValue( e.target.value)}
+                   
+                   >
+                
                 </input>
+
                 <button className="editBtn"
                     onClick={() => this.enabledEditMode()}
                 >
@@ -53,12 +69,14 @@ class ItemTDL extends React.Component {
                 <button className="deleteBtn">
                     delete
                 </button>
-
+                
             </div>
 
 
         )
     }
+
+    
 }
 
 export default ItemTDL;

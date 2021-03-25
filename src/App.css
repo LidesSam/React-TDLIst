@@ -42,24 +42,27 @@
   }
 }
 
+.centerbox{
+  display: flex;
+  align-items: center;
+  background-color: #282860;
+  justify-content: center;
+  
+}
+
 .itemtdl{
   display:  flex;
   flex-direction:  row;
-  width: 100%;
+
   align-items: center;
+  justify-content: center;
 }
 
 
-.itemtdl .editBtn{
-
+.itemtdl .txtarea{
+  min-width:50vw;
 }
 
-.itemtdl .delBtn{
 
-}
 
-.itemtdl .margincontainer{
-  
-
-}
 
