@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 
 
 
@@ -12,26 +12,34 @@ class ItemTDL extends Component {
         this.state = {
             id: props.id,
             value: props.value,
-            callbackDel:  props.callbackDel,
-            callbackEdit:  props.callbackEdit,
+            callbackDel: props.callbackDel,
+            callbackEdit: props.callbackEdit,
+            callbackCheck: props.callbackCheck,
+
+            checked: props.checked,
+
             inEdit: false
-           
-            
+
+
         }
-    
+
+
+
     }
 
     updateValue(Value) {
-        if(this.state.inEdit){
-         this.state.value = Value
+        if (this.state.inEdit) {
+            this.state.value = Value
         }
     }
 
     inEditMode() {
-   
+
         return this.state.inEdit;
     }
-
+    getChecked() {
+        return this.state.checked
+    }
     handleClick() {
 
     }
@@ -39,32 +47,32 @@ class ItemTDL extends Component {
     enabledEditMode() {
 
         this.state.inEdit = true;
-        var vinput=document.getElementById("valueInput"+this.state.id)
-        vinput.disabled= !this.state.inEdit
-        
+        var vinput = document.getElementById("valueInput" + this.state.id)
+        vinput.disabled = !this.state.inEdit
+
     }
     editPressed() {
         if (typeof this.state.callbackEdit == 'function') {
-            console.log("v1:"+this.state.value)
-            this.state.value= this.state.callbackEdit(this.state.id)
-            var vinput=document.getElementById("valueInput"+this.state.id)
-            vinput.value= this.state.value
-            
+            console.log("v1:" + this.state.value)
+            this.state.value = this.state.callbackEdit(this.state.id)
+            var vinput = document.getElementById("valueInput" + this.state.id)
+            vinput.value = this.state.value
+
         } else {
-           console.log("no set edit press")
+            console.log("no set edit press")
         }
-        
+
 
     }
 
     deleteitself() {
         if (typeof this.state.callbackDel == 'function') {
-           
+
             this.state.callbackDel(this.state.id)
         } else {
-           console.log("no set delete callback")
+            console.log("no set delete callback")
         }
-        
+
 
     }
 
@@ -74,16 +82,22 @@ class ItemTDL extends Component {
 
             <div className="itemtdl">
 
-                <input type="checkbox" id="cbox" value="first_checkbox"></input>
+                <input type="checkbox"
+                    id={"cbox" + this.state.id}
+                    value={this.getChecked()}
+
+                >
+
+                </input>
                 <span>{this.state.id} </span>
-                <textarea id = {"valueInput"+this.state.id} type="text" placeholder="TDLItem"
-                   
+                <textarea className="txtarea" id={"valueInput" + this.state.id} type="text" placeholder=""
+
                     disabled={true}
 
                     onChange={e => this.updateValue(e.target.value)}
                     value={this.state.value}
                 >
-                    
+
                 </textarea>
 
                 {/*<button className="editBtn"
