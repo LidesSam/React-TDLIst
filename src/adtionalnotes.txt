@@ -1,4 +1,16 @@
+This document contain notes of helpfull data, bug and posible freatures for the development
+they are write bellow the last commit that was added previous to it addition
+(this mean they are not include in that commit instead in the next)
+
 prototype 4(creation and delete of items fully functional)
 objects in list don't recive inputs
 prototype 5 todo function witout functions of presitence
 prototype 6 firebase include, lack sincorny in delete and update(only with the checkbox)
+
+Note:---------------------------------------------------------------------------------------------------->2021-03-26
+the method use to seach items is asincronous this not was considered in the develop and is nesesary test
+and evalute if nesesary a alternative for question of performance, stability and the posibilit cause bug and glicth 
+derived from dissincrony obetween the date show in the app and the server(firebase) databases .
+|-------------------------------------------------------------------------------------------------------->2021-03-26
+
+prototype 7 : function of delete and check box now function 

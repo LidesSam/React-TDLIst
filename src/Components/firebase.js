@@ -11,5 +11,6 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 const fb = firebase.initializeApp(firebaseConfig);
+//export firestore// here should be exporte the auth(fuction of autentication)
 export const db = fb.firestore();
 

@@ -9,10 +9,12 @@ import { db } from '../src/Components/firebase.js'
 import { BrowserRouter as Router } from 'react-router-dom';
 //import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-
+const collectionName ="test"
 
 class App extends Component {
 
+
+  
   constructor(props) {
     super(props);
 
@@ -41,7 +43,7 @@ class App extends Component {
     let higgertid = 0
 
     //order by id, if not cause a error that allow duplicates id
-    db.collection("testlist").orderBy("id")
+    db.collection(collectionName).orderBy("id")
       .get()
       .then(snapshot => {
         //console.log(snapshot)
@@ -54,9 +56,11 @@ class App extends Component {
           if (data.id > higgertid) {
             higgertid = data.id
           }
+
           //higerid+1(if not duplicate the last id in the first addition of a item)
           this.setState({ list: drtest, lastID: higgertid });
-          console.log("lastid:" + this.state.lastID)
+          console.log("lastid:" + this.state.lastID + " dcheck" + data.checked)
+
         });
       })
       .catch(error => console.log(error))
@@ -102,7 +106,7 @@ class App extends Component {
       lastID: newlastID
     });
 
-    db.collection("testlist")
+    db.collection(collectionName)
       .add({
 
 
@@ -144,8 +148,27 @@ class App extends Component {
     vinput.value = ""
 
   }
+
+
+
+  /**
+   * Delete a item from the veiw and from firebase
+   * @param {} id 
+   */
   deleteItem(id) {
 
+
+
+    //delete from firebase
+    //get the registry with the same id
+    //note: should improved the edit with this code.
+    db.collection(collectionName).where("id", "==", id).get()
+      .then(querySnapshot => {
+        //delete registry
+        querySnapshot.docs[0].ref.delete();
+      });
+
+    //delete form this
     // copy current list of items
     const list = [...this.state.list];
     // filter out the item being deleted
@@ -156,14 +179,23 @@ class App extends Component {
   }
 
   //to edit value
-  editItem(id,value) {
-    console.log("edit" + id)
+  editItem(id, value) {
+
     // promt instead of a Modal(pop-up), simply because was quick to made
     // previst to be change to a modal(pop up) in the near future.
-    const newvalue = prompt("New value ",value)
+    const auxvalue = value
+
+    let newvalue = prompt("New value ", value)
+
+    //if not chosee cancel in prompt
+
+    if (newvalue == null) {
+      console.log("cancel:" + newvalue + " av " + auxvalue + " v " + value)
+      newvalue = auxvalue
+    }
 
 
-    db.collection("testlist").orderBy("id")
+    db.collection(collectionName).orderBy("id")
       .get()
       .then(snapshot => {
         snapshot.forEach(doc => {
@@ -171,17 +203,44 @@ class App extends Component {
           const data = doc.data()
           //check if the sec id is equal to the ide of the Item-tdl
           if (data.id == id) {
-
-            db.collection("testlist").doc(doc.id).update({ value: newvalue });
+            console.log("finded"+doc.id)
+            db.collection(collectionName).doc(doc.id).update({ value: newvalue });
           }
 
         });
       })
+
     return newvalue;
   }
 
+  //mod of editItem
+  //update checked field
+  checkItem(id, value) {
 
-  
+  //  console.log("check" + id+"value:"+value)
+
+    db.collection(collectionName).orderBy("id")
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          //pass data of doc to a const to be added to drtest
+          const data = doc.data()
+          //check if the sec id is equal to the ide of the Item-tdl
+          
+          //console.log(data.id+" id: "+id)
+          if (data.id == id) {
+         
+            //console.log("finded check:"+value)
+            db.collection(collectionName).doc(doc.id).update({ checked: value });
+          }
+
+        });
+      })
+      
+
+  }
+
+
 
 
   render() {
@@ -236,7 +295,7 @@ class App extends Component {
           </button>
         */}
 
-        <br /> <hr/><br />
+        <br /> <hr /><br />
         <ul>
           {this.state.list.map(item => {
             return (
@@ -247,7 +306,8 @@ class App extends Component {
                   checked={item.checked}
                   value={item.value}
                   callbackDel={() => this.deleteItem(item.id)}
-                  callbackEdit={() => this.editItem(item.id,item.value)}
+                  callbackEdit={() => this.editItem(item.id, item.value)}
+                  callbackCheck={() => this.checkItem}
 
                 />
 
