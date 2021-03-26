@@ -266,6 +266,10 @@ class App extends Component {
 
 
         <h3>Thing To Do </h3>
+        <br/>
+        <hr/>
+        <h4>prototype 7 </h4>
+        <hr/>
         <br />
 
         {/* add item */}
